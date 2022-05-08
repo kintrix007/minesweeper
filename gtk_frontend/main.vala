@@ -14,6 +14,7 @@ namespace GtkFrontend {
         var game = new Game(width, height, bombs);
         
         app.activate.connect(() => {
+            var flagged_count = 0;
             var is_revealing = true;
             
             var window = new Gtk.ApplicationWindow(app);
@@ -24,15 +25,17 @@ namespace GtkFrontend {
 
             var new_game_button = new NewGameButton(window);
             var reveal_mode_button = new TileClickModeButton(is_revealing);
+            var bomb_count_label = new Gtk.Label(@"Bombs: $bombs");
 
             var headerbar = new Gtk.HeaderBar();
             headerbar.pack_start(reveal_mode_button);
-            headerbar.pack_start(new Gtk.Label("Bombs: 10"));
+            headerbar.pack_start(bomb_count_label);
             headerbar.pack_end(new_game_button);
             window.titlebar = headerbar;
 
             var grid = new BombGrid();
-            //  grid.make_button_grid(width, height);
+            grid.make_button_grid(width, height);  // ? Also need to connect up signals from 'game' on application open
+            connect_game_signals(game, window, grid);
 
             reveal_mode_button.mode_changed.connect((mode) => {
                 is_revealing = mode == REVEAL;
@@ -43,6 +46,9 @@ namespace GtkFrontend {
                     if (!btn.is_flagged) game.reveal(x, y);
                 } else {
                     btn.is_flagged = !btn.is_flagged;
+                    if (btn.is_flagged) flagged_count++; else flagged_count--;
+                    bomb_count_label.label = @"Bombs: $(bombs - flagged_count)";
+                    print(@"$flagged_count\n");
                 }
             });
             
@@ -60,18 +66,10 @@ namespace GtkFrontend {
                 window.set_default_size(w * TILE_WIDTH, h * TILE_HEIGHT);
                 window.width_request = w * TILE_WIDTH;
                 window.height_request = h * TILE_HEIGHT * (window.get_allocated_width() / (w * TILE_WIDTH));
-                
+                bomb_count_label.label = @"Bombs: $bombs";
                 
                 game = new Game(width, height, bombs);
-                game.lost.connect(() => {
-                    //  window.close();
-                });
-                game.won.connect(() => {
-                    print("WON!\n");
-                });
-                game.board_update.connect((w, h, board) => {
-                    grid.display_board(w, h, board);
-                });
+                connect_game_signals(game, window, grid);
             });
 
             window.set_child(grid);
@@ -80,5 +78,17 @@ namespace GtkFrontend {
 
         app.run(args);
         return 0;
+    }
+
+    void connect_game_signals(Game game, Gtk.ApplicationWindow window, BombGrid grid) {
+        game.lost.connect(() => {
+            //  window.close();
+        });
+        game.won.connect(() => {
+            print("WON!\n");
+        });
+        game.board_update.connect((w, h, board) => {
+            grid.display_board(w, h, board);
+        });
     }
 }

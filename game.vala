@@ -74,8 +74,10 @@ public class Game {
                 for (int i = -1; i <= 1; i++)
                 for (int j = -1; j <= 1; j++) {
                     if (!is_in_bounds(x+i, y+j)) continue;
-                    board[y+j, x+i].is_bomb = false;
-                    place_random_bomb();
+                    if (board[y+j, x+i].is_bomb) {
+                        board[y+j, x+i].is_bomb = false;
+                        place_random_bomb();
+                    }
                 }
                 
                 for (int i = -1; i <= 1; i++)

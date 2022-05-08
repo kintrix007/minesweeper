@@ -21,7 +21,6 @@ namespace GtkFrontend {
             window.icon_name = "kmines";
             //  window.resizable = false;
             window.set_default_size(width * TILE_WIDTH, height * TILE_HEIGHT);
-            //  window.width_request = 1000;
 
             var new_game_button = new NewGameButton(window);
             var reveal_mode_button = new TileClickModeButton(is_revealing);

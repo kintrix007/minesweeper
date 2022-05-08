@@ -4,6 +4,8 @@
 
 ### Dependencies
 
+This project uses system icons which may or may not exist with the same name - or at all - on your system.
+
 - valac
 - gtk4
 - meson

@@ -24,14 +24,20 @@ namespace GtkFrontend {
             }
         }
 
+        public void disable_all(int width, int height) {
+            for (int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++) {
+                var child = this.get_child_at(i, j) as GridTileButton;
+                child.sensitive = false;
+            }
+        }
+
         public void display_board(int width, int height, Tile[,] board) {
             for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
                 var tile = board[j, i];
                 var child = this.get_child_at(i, j) as GridTileButton;
                 if (tile.is_revealed) {
-                    child.remove_css_class("hidden");
-
                     if (tile.is_bomb) child.set_icon_name("kmines");
                     else if (!child.is_flagged) {
                         var neighbors = tile.bomb_neighbor_count;
@@ -40,8 +46,6 @@ namespace GtkFrontend {
                         child.sensitive = false;
                     }
                 } else {
-                    child.add_css_class("hidden");
-
                     child.update_is_flagged_label();
                 }
             }

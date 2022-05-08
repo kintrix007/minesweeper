@@ -81,6 +81,8 @@ namespace GtkFrontend {
 
     void connect_game_signals(Game game, Gtk.ApplicationWindow window, BombGrid grid) {
         game.lost.connect(() => {
+            grid.disable_all(game.width, game.height);
+
             var dialog = new Gtk.Dialog.with_buttons("You Lost!", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.USE_HEADER_BAR);
             var vbox = new Gtk.Box(Gtk.Orientation.VERTICAL, 30);
             vbox.margin_top = 35;
@@ -102,6 +104,8 @@ namespace GtkFrontend {
         });
         
         game.won.connect(() => {
+            grid.disable_all(game.width, game.height);
+            
             var dialog = new Gtk.Dialog.with_buttons("You Won!", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.USE_HEADER_BAR);
             var vbox = new Gtk.Box(Gtk.Orientation.VERTICAL, 30);
             vbox.margin_top = 35;

@@ -13,7 +13,7 @@
 
 1. Copy this repo
 ```sh
-$ git clone https://github.com/kintrix/minesweeper.git
+$ git clone https://github.com/kintrix007/minesweeper.git
 ```
 2. Set up build directory
 ```sh

@@ -48,7 +48,6 @@ namespace GtkFrontend {
                     btn.is_flagged = !btn.is_flagged;
                     if (btn.is_flagged) flagged_count++; else flagged_count--;
                     bomb_count_label.label = @"Bombs: $(bombs - flagged_count)";
-                    print(@"$flagged_count\n");
                 }
             });
             
@@ -65,7 +64,7 @@ namespace GtkFrontend {
                 grid.make_button_grid(w, h);
                 window.set_default_size(w * TILE_WIDTH, h * TILE_HEIGHT);
                 window.width_request = w * TILE_WIDTH;
-                window.height_request = h * TILE_HEIGHT * (window.get_allocated_width() / (w * TILE_WIDTH));
+                window.height_request = h * TILE_HEIGHT;
                 bomb_count_label.label = @"Bombs: $bombs";
                 
                 game = new Game(width, height, bombs);
@@ -82,11 +81,47 @@ namespace GtkFrontend {
 
     void connect_game_signals(Game game, Gtk.ApplicationWindow window, BombGrid grid) {
         game.lost.connect(() => {
-            //  window.close();
+            var dialog = new Gtk.Dialog.with_buttons("You Lost!", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.USE_HEADER_BAR);
+            var vbox = new Gtk.Box(Gtk.Orientation.VERTICAL, 30);
+            vbox.margin_top = 35;
+            vbox.margin_bottom = 15;
+            vbox.margin_start = 50;
+            vbox.margin_end = 50;
+            var label = new Gtk.Label("You triggered a mine!");
+            var button = new Gtk.Button.with_label("Okay!");
+            button.clicked.connect(() => {
+                dialog.close();
+            });
+            vbox.append(label);
+            vbox.append(button);
+            dialog.set_child(vbox);
+            Timeout.add(1000, () => {
+                dialog.present();
+                return false;
+            });
         });
+        
         game.won.connect(() => {
-            print("WON!\n");
+            var dialog = new Gtk.Dialog.with_buttons("You Won!", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.USE_HEADER_BAR);
+            var vbox = new Gtk.Box(Gtk.Orientation.VERTICAL, 30);
+            vbox.margin_top = 35;
+            vbox.margin_bottom = 15;
+            vbox.margin_start = 50;
+            vbox.margin_end = 50;
+            var label = new Gtk.Label("Congratualtions!");
+            var button = new Gtk.Button.with_label("Okay!");
+            button.clicked.connect(() => {
+                dialog.close();
+            });
+            vbox.append(label);
+            vbox.append(button);
+            dialog.set_child(vbox);
+            Timeout.add(1000, () => {
+                dialog.present();
+                return false;
+            });
         });
+
         game.board_update.connect((w, h, board) => {
             grid.display_board(w, h, board);
         });

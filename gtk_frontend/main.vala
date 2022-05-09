@@ -60,6 +60,7 @@ namespace GtkFrontend {
                 width = w;
                 height = h;
                 bombs = b;
+                flagged_count = 0;
                 grid.make_button_grid(w, h);
                 window.set_default_size(w * TILE_WIDTH, h * TILE_HEIGHT);
                 window.width_request = w * TILE_WIDTH;

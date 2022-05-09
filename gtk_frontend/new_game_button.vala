@@ -11,7 +11,7 @@ namespace GtkFrontend {
                 
                 var dialog = new Gtk.Dialog.with_buttons("New Game", window, Gtk.DialogFlags.MODAL);
                 
-                var done_button = new Gtk.Button.with_label("Done");
+                var done_button = new Gtk.Button.with_label("Create");
                 done_button.clicked.connect(() => {
                     confirmed(width, height, bombs);
                     dialog.close();

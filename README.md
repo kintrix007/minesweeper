@@ -2,11 +2,13 @@
 
 ### This is my little project to get into learning GTK with Vala.
 
+![Screenshot of the game window](screenshot.png)
+
 ### Dependencies
 
 This project uses system icons which may or may not exist with the same name - or at all - on your system.
 
-- valac
+- vala
 - gtk4
 - meson
 - ninja

@@ -34,10 +34,10 @@ namespace GtkFrontend {
                 vbox.margin_start = 20;
                 vbox.margin_end = 20;
 
-                var width_spin_button = new Gtk.SpinButton.with_range(2, 20, 1);
+                var width_spin_button = new Gtk.SpinButton.with_range(4, 20, 1);
                 width_spin_button.value = width;
                 
-                var height_spin_button = new Gtk.SpinButton.with_range(2, 20, 1);
+                var height_spin_button = new Gtk.SpinButton.with_range(4, 20, 1);
                 height_spin_button.value = height;
                 
                 var bombs_spin_button = new Gtk.SpinButton.with_range(1, width*height-9, 1);

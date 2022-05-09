@@ -4,14 +4,25 @@
 
 ![Screenshot of the game window](screenshot.png)
 
+---
+
 ### Dependencies
 
 This project uses system icons which may or may not exist with the same name - or at all - on your system.
 
-- vala
+- vala, gcc
 - gtk4
-- meson
-- ninja
+- meson, ninja, cmake
+- pkg-config
+
+**Void Linux:**
+
+```sh
+sudo xbps-install -S gcc vala meson ninja cmake pkg-config gtk4-devel
+```
+For development also install the `vala-language-server` package.
+
+---
 
 ### Build instructions
 

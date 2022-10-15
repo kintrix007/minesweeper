@@ -26,6 +26,7 @@ For development also install the `vala-language-server` package.
 ```sh
 sudo dnf install gcc vala meson ninja-build pkg-config gtk4-devel
 ```
+For development also install the `vala-language-server` package.
 
 ---
 

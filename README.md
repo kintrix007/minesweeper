@@ -24,8 +24,8 @@ For development also install the `vala-language-server` package.
 
 **Fedora Linux:**
 ```sh
-sudo dnf install gcc vala meson ninja-build pkg-config gtk4-devel
-```
+sudo dnf install gcc vala meson ninja-build cmake pkg-config gtk4-devel
+``` 
 For development also install the `vala-language-server` package.
 
 ---

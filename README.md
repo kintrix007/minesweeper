@@ -32,16 +32,17 @@ For development also install the `vala-language-server` package.
 
 ### Build instructions
 
-1. Copy this repo
+1. Clone this repo
 ```sh
 $ git clone https://github.com/kintrix007/minesweeper.git
 ```
-2. Set up build directory
+2. Install dependencies
+3. Set up build directory
 ```sh
 $ meson setup build
 ```
-3. Compile the code
+4. Compile the code
 ```sh
 $ meson compile -C build/
 ```
-4. You are done. The executable is located at `build/minesweeper`.
+5. You are done. The executable is located at `build/minesweeper`.

@@ -45,6 +45,7 @@ namespace GtkFrontend {
                     if (!btn.is_flagged) game_mgr.reveal(x, y);
                 } else {
                     btn.is_flagged = !btn.is_flagged;
+                    //  flagged_count += (int)btn.is_flagged * 2 - 1;
                     if (btn.is_flagged) flagged_count++; else flagged_count--;
                     bomb_count_label.label = @"Bombs: $(bombs - flagged_count)";
                 }

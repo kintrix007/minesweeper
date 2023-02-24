@@ -19,9 +19,11 @@ namespace GtkFrontend {
             this.height = height;
             this.bombs = bombs;
             
-            game.board_update.disconnect(emit_board_update);
-            game.lost.disconnect(emit_lost);
-            game.won.disconnect(emit_won);
+            if (game != null) {
+                game.board_update.disconnect(emit_board_update);
+                game.lost.disconnect(emit_lost);
+                game.won.disconnect(emit_won);
+            }
 
             this.game = new Game(width, height, bombs);
             

@@ -1,48 +1,96 @@
 # Minesweeper
 
-### This is my little project to get into learning GTK with Vala.
+## This is my little project to get into learning GTK with Vala
 
-![Screenshot of the game window](screenshot.png)
+![Screenshot of a Minesweeper game](screenshot.png)
 
----
+## Dependencies
 
-### Dependencies
+This project uses system icons which may or may not exist with the same name -
+or at all - on your system.
 
-This project uses system icons which may or may not exist with the same name - or at all - on your system.
-
-- vala, gcc
-- gtk4
-- meson, ninja, cmake
+- Vala
+- GTK4
+- Meson
+- ninja
 - pkg-config
 
-**Void Linux:**
+For development also install the Vala Language Server.
+
+### For Development with Nix
+
+Note: This step is not required if you are also building it with Nix. Then
+simply skip ahead to the build instructions.
+
+Note: This includes the Vala Language Server as well.
 
 ```sh
-sudo xbps-install -S gcc vala meson ninja cmake pkg-config gtk4-devel
+nix-shell
 ```
-For development also install the `vala-language-server` package.
 
-**Fedora Linux:**
+### Void Linux
+
 ```sh
-sudo dnf install gcc vala meson ninja-build cmake pkg-config gtk4-devel
-``` 
-For development also install the `vala-language-server` package.
+sudo xbps-install -S vala meson ninja pkg-config gtk4-devel
+```
 
----
+### Fedora Linux
 
-### Build instructions
+```sh
+sudo dnf install vala meson ninja-build pkg-config gtk4-devel
+```
+
+## Build instructions
+
+### With Nix
 
 1. Clone this repo
-```sh
-$ git clone https://github.com/kintrix007/minesweeper.git
-```
+
+   ```sh
+   git clone https://github.com/kintrix007/minesweeper.git
+   ```
+
+2. Build it
+
+   ```sh
+   nix-build
+   ```
+
+3. Install the package globally (optional)
+
+   ```sh
+   nix-env -i ./result
+   ```
+
+The built derivation will be symlinked as `result` in the current working
+directory.
+
+### With Meson
+
+1. Clone this repo
+
+   ```sh
+   git clone https://github.com/kintrix007/minesweeper.git
+   ```
+
 2. Install dependencies
+
 3. Set up build directory
-```sh
-$ meson setup build
-```
+
+   ```sh
+   meson setup builddir
+   ```
+
 4. Compile the code
-```sh
-$ meson compile -C build/
-```
-5. You are done. The executable is located at `build/minesweeper`.
+
+   ```sh
+   meson compile -C builddir
+   ```
+
+   You are done. The executable is located at `builddir/minesweeper`.
+
+5. Install the binaries globally (optional)
+
+   ```sh
+   meson install -C builddir
+   ```

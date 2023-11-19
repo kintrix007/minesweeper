@@ -1,0 +1,3 @@
+option('cli_only', type : 'boolean', value : false,
+       description: 'Whether to build with a Command Line Interface,' +
+                    'or with a Command Line Interface')

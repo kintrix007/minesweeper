@@ -1,4 +1,4 @@
-{ pkgs ? import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/1b7a6a6e57661d7d4e0775658930059b77ce94a4.tar.gz") { } }:
+{ pkgs ? import <nixpkgs> { }, cliOnly ? false }:
 
 pkgs.stdenv.mkDerivation {
   pname = "minesweeper";
@@ -26,6 +26,8 @@ pkgs.stdenv.mkDerivation {
   #   substituteInPlace $out/share/applications/me.kintrix.Minesweeper.desktop \
   #     --replace "Exec=minesweeper" "Exec=$out/bin/minesweeper"
   # '';
+
+  mesonFlags = pkgs.lib.optional cliOnly "-Dcli_only=true";
 
   postInstall = ''
     mkdir -p $out/share/applications

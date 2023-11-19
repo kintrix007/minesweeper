@@ -1,6 +1,10 @@
 project('minesweeper-gtk', 'vala', 'c')
 
-add_project_arguments(['-D', 'PREPROCESSOR_CLI'], language: 'vala')
+cli_only = get_option('cli_only')
+
+if cli_only
+  add_project_arguments(['-D', 'PREPROCESSOR_CLI'], language: 'vala')
+endif
 
 deps = [
   dependency('gtk4'),
@@ -9,12 +13,24 @@ deps = [
 ]
 
 sources = files(
-  'main.vala', 'game.vala',
-  'cli_frontend/main.vala',
-  'gtk_frontend/main.vala', 'gtk_frontend/new_game_button.vala',
-  'gtk_frontend/bomb_grid.vala', 'gtk_frontend/tile_click_mode_button.vala',
-  'gtk_frontend/info_dialog.vala', 'gtk_frontend/game_manager.vala',
+  'main.vala',
+  'game.vala',
 )
+
+if cli_only
+  sources += [
+    'cli_frontend/main.vala',
+  ]
+else
+  sources += [
+    'gtk_frontend/main.vala',
+    'gtk_frontend/new_game_button.vala',
+    'gtk_frontend/bomb_grid.vala',
+    'gtk_frontend/tile_click_mode_button.vala',
+    'gtk_frontend/info_dialog.vala',
+    'gtk_frontend/game_manager.vala',
+  ]
+endif
 
 executable('minesweeper',
   sources,

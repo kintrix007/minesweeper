@@ -8,32 +8,27 @@ pkgs.stdenv.mkDerivation {
     pkg-config
     meson
     ninja
-    cmake
-    gcc
     vala
     vala-language-server
   ];
 
   buildInputs = with pkgs; [
     gtk4
-    papirus-icon-theme
+    papirus-icon-theme # Technically uses it
   ];
 
   src = ./.;
 
   buildPhase = ''
-    cd $src
-    meson setup $out/builddir
+    meson setup $out/builddir $src --prefix $out
     meson compile -C $out/builddir
   '';
 
   installPhase = ''
-    mkdir -p $out/bin/
+    meson install -C $out/builddir
+
     mkdir -p $out/share/applications
-    mv $out/builddir/minesweeper $out/bin/
     cp $src/dist/me.kintrix.Minesweeper.desktop $out/share/applications
-    # substituteInPlace "$out/share/applications/org.godotengine.Godot.desktop" \
-    #   --replace "Exec=godot" "Exec=$out/bin/godot"
     substituteInPlace $out/share/applications/me.kintrix.Minesweeper.desktop \
       --replace "Exec=minesweeper" "Exec=$out/bin/minesweeper"
   '';

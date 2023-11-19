@@ -17,6 +17,6 @@ sources = files(
 executable('minesweeper',
   sources,
   dependencies: deps,
-  install: false,
+  install: true,
   gui_app: true,
 )

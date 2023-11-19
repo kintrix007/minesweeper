@@ -19,14 +19,16 @@ pkgs.stdenv.mkDerivation {
 
   src = ./.;
 
-  buildPhase = ''
-    meson setup $out/builddir $src --prefix $out
-    meson compile -C $out/builddir
-  '';
+  # ! The following would NOT work. This would overwrite the default meson
+  # ! install behaviour, so it would only copy the .desktop file
+  # installPhase = ''
+  #   mkdir -p $out/share/applications
+  #   cp $src/dist/me.kintrix.Minesweeper.desktop $out/share/applications
+  #   substituteInPlace $out/share/applications/me.kintrix.Minesweeper.desktop \
+  #     --replace "Exec=minesweeper" "Exec=$out/bin/minesweeper"
+  # '';
 
-  installPhase = ''
-    meson install -C $out/builddir
-
+  postInstall = ''
     mkdir -p $out/share/applications
     cp $src/dist/me.kintrix.Minesweeper.desktop $out/share/applications
     substituteInPlace $out/share/applications/me.kintrix.Minesweeper.desktop \

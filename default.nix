@@ -1,4 +1,7 @@
-{ pkgs ? import <nixpkgs> { }, cliOnly ? false }:
+let
+  url = "https://github.com/NixOS/nixpkgs/archive/e49c28b3baa3a93bdadb8966dd128f9985ea0a09.tar.gz";
+in
+{ pkgs ? import (fetchTarball url) { }, cliOnly ? false }:
 
 pkgs.stdenv.mkDerivation {
   pname = "minesweeper";

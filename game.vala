@@ -25,8 +25,7 @@ public class Game {
     Tile[,] board;
     
     public Game(int width, int height, int bombs)
-        requires(width * height > 9)
-        requires(bombs <= width*height-9)
+        requires(width*height - bombs >= 9)
     {
         is_ongoing = true;
         is_first_reveal = true;

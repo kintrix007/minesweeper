@@ -19,10 +19,10 @@ For development also install the Vala Language Server.
 
 ### For Development with Nix
 
-Note: This step is not required if you are also building it with Nix. Then
-simply skip ahead to the build instructions.
+*Note: This step is not required if you are also building it with Nix. Then
+simply skip ahead to the build instructions.*
 
-Note: This includes the Vala Language Server as well.
+*Note: This includes the Vala Language Server as well.*
 
 ```sh
 nix-shell

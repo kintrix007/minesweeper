@@ -1,5 +1,7 @@
 project('minesweeper-gtk', 'vala', 'c')
 
+add_project_arguments(['-D', 'PREPROCESSOR_CLI'], language: 'vala')
+
 deps = [
   dependency('gtk4'),
   dependency('glib-2.0'),

@@ -1,2 +1,4 @@
 # Exclude the build directory
 build/
+builddir/
+result

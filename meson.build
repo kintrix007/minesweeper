@@ -18,4 +18,5 @@ executable('minesweeper',
   sources,
   dependencies: deps,
   install: false,
+  gui_app: true,
 )

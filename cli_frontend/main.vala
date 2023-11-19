@@ -15,6 +15,7 @@ namespace CliFrontend {
         });
 
         game.board_update.connect((width, height, board) => {
+            print("\n");
             print("   ");
             for (int x = 0; x < width; x++) {
                 if (x < 9) {
@@ -45,24 +46,29 @@ namespace CliFrontend {
         game.update();
 
         while (is_game_alive) {
-            print("x y to reveal? (separated by spaces) ");
+            print("x y to reveal? (separated by spaces) > ");
             stdout.flush();
             var coords = stdin.read_line().split(" ");
             int x, y;
 
+            if (coords[0] == "" || coords[1] == "") {
+                print("Please give two whole numbers with a space between.\n");
+                continue;
+            }
+
             var valid_x = int.try_parse(coords[0], out x);
             var valid_y = int.try_parse(coords[1], out y);
 
-            x--;
-            y--;
-
             if (!valid_x || !valid_y) {
-                print("Incorrect input format.\n");
+                print("Please give two whole numbers with a space between.\n");
                 continue;
             }
 
             print(@"x: $x, y: $y");
             print("\n");
+
+            x--;
+            y--;
             game.reveal(x, y);
         }
 

@@ -43,6 +43,10 @@ public class Game {
         calculate_bomb_neighbors();
     }
 
+    public void update() {
+        board_update(this.width, this.height, this.board);
+    }
+    
     public void reveal(int x, int y)
         requires(x >= 0 && x < width)
         requires(y >= 0 && y < height)

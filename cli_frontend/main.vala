@@ -1,31 +1,98 @@
 namespace CliFrontend {
     public int run(string[] args) {
         var game = new Game(10, 10, 10);
-        game.won.connect(() => print("Won!\n"));
-        game.lost.connect(() => print("Lost!\n"));
+        var is_game_alive = true;
+        var won = false;
+
+        game.won.connect(() => {
+            is_game_alive = false;
+            won = true;
+        });
+
+        game.lost.connect(() => {
+            is_game_alive = false;
+            won = false;
+        });
+
         game.board_update.connect((width, height, board) => {
-            for (int j = 0; j < height; j++) {
-                for (int i = 0; i < width; i++) {
-                    var tile = board[i, j];
-                    if (tile.is_revealed) {
-                        if (tile.is_bomb) print("@");
-                        else {
-                            var neighbors = tile.bomb_neighbor_count;
-                            print(neighbors == 0 ? " " : @"$neighbors");
-                            //  print(@"$neighbors");
-                        }
-                    } else {
-                        print("?");
-                    }
-                    print(" ");
+            print("   ");
+            for (int x = 0; x < width; x++) {
+                if (x < 9) {
+                    print(@" $(x+1)");
+                } else {
+                    print(@"$(x+1)");
+                }
+            }
+            print("\n\n");
+
+            for (int y = 0; y < height; y++) {
+                if (y < 9) {
+                    print(@" $(y+1)  ");
+                } else {
+                    print(@"$(y+1)  ");
+                }
+
+                for (int x = 0; x < width; x++) {
+                    var tile = board[y, x];
+                    var visual = get_tile_visuals(tile);
+                    print(@"$visual ");
                 }
                 print("\n");
             }
             print("\n");
         });
         
-        game.reveal(7, 5);
-        game.reveal(3, 5);
+        game.update();
+
+        while (is_game_alive) {
+            print("x y to reveal? (separated by spaces) ");
+            stdout.flush();
+            var coords = stdin.read_line().split(" ");
+            int x, y;
+
+            var valid_x = int.try_parse(coords[0], out x);
+            var valid_y = int.try_parse(coords[1], out y);
+
+            x--;
+            y--;
+
+            if (!valid_x || !valid_y) {
+                print("Incorrect input format.\n");
+                continue;
+            }
+
+            print(@"x: $x, y: $y");
+            print("\n");
+            game.reveal(x, y);
+        }
+
+        if (won) {
+            print("\n\n");
+            print(".--------------.\n");
+            print("|   YOU WON!   |\n");
+            print("'--------------'\n");
+            print("\n\n");
+        } else {
+            print("\n\n");
+            print(".---------------.\n");
+            print("|   YOU LOST!   |\n");
+            print("'---------------'\n");
+            print("\n\n");
+        }
+
         return 0;
+    }
+
+    string get_tile_visuals(Tile tile) {
+        if (!tile.is_revealed) {
+            return "?";
+        }
+
+        if (tile.is_bomb) {
+            return "@";
+        } else {
+            var neighbors = tile.bomb_neighbor_count;
+            return neighbors == 0 ? " " : @"$neighbors";
+        }
     }
 }

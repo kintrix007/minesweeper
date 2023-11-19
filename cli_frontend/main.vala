@@ -10,7 +10,7 @@ namespace CliFrontend {
             return 0;
         }
         if (version) {
-            print("Minesweeper version 1.0.0\n");
+            print(@"Minesweeper version $VERSION\n");
             return 0;
         }
 

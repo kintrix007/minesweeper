@@ -1,4 +1,4 @@
-project('minesweeper-gtk', 'vala', 'c')
+project('minesweeper-gtk', 'vala', 'c', version: '1.0.0')
 
 cli_only = get_option('cli_only')
 

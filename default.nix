@@ -14,7 +14,6 @@ pkgs.stdenv.mkDerivation {
 
   buildInputs = with pkgs; [
     gtk4
-    papirus-icon-theme # Technically uses it
   ];
 
   src = ./.;
@@ -33,5 +32,7 @@ pkgs.stdenv.mkDerivation {
     cp $src/dist/me.kintrix.Minesweeper.desktop $out/share/applications
     substituteInPlace $out/share/applications/me.kintrix.Minesweeper.desktop \
       --replace "Exec=minesweeper" "Exec=$out/bin/minesweeper"
+
+    ln -s ${pkgs.papirus-icon-theme}/share/icons $out/share/icons
   '';
 }

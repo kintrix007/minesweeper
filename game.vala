@@ -47,64 +47,58 @@ public class Game {
     }
     
     public void reveal(int x, int y)
-        requires(x >= 0 && x < width)
-        requires(y >= 0 && y < height)
+        requires(y >= 0 && y < height && x >= 0 && x < width)
     {
         if (!is_ongoing) return;
         
         board[y, x].is_revealed = true;
 
-        if (board[y, x].is_bomb) {
-            if (is_first_reveal) {
-                // Make sure the first one is not a bomb
-                // to let the game start in the first place
-                board[y, x].is_bomb = false;
-                place_random_bomb();
-            } else {
+        if (is_first_reveal) {
+            is_first_reveal = false;
+            handle_first_reveal_at(x, y);
+        } else {
+            if (board[y, x].is_bomb) {
                 this.is_ongoing = false;
                 lost();
                 reveal_every_bomb();
             }
-        }
 
-        if (is_first_reveal) {
-            if (board[y, x].bomb_neighbor_count != 0) {
-                for (int i = -1; i <= 1; i++)
-                for (int j = -1; j <= 1; j++) {
-                    if (!is_in_bounds(x+i, y+j)) continue;
-                    board[y+j, x+i].is_revealed = true;
-                }
-
-                for (int i = -1; i <= 1; i++)
-                for (int j = -1; j <= 1; j++) {
-                    if (!is_in_bounds(x+i, y+j)) continue;
-                    if (board[y+j, x+i].is_bomb) {
-                        board[y+j, x+i].is_bomb = false;
-                        place_random_bomb();
-                    }
-                }
-                
-                for (int i = -1; i <= 1; i++)
-                for (int j = -1; j <= 1; j++) {
-                    if (!is_in_bounds(x+i, y+j)) continue;
-                    reveal_connected(x+i, y+j);
-                }
-            }
-        }
-
-        is_first_reveal = false;
-
-        if (is_ongoing) {
             reveal_connected(x, y);
+        }
 
-            if (has_won()) {
-                this.is_ongoing = false;
-                won();
-                reveal_every_bomb();
-            }
+        if (has_won()) {
+            this.is_ongoing = false;
+            won();
+            reveal_every_bomb();
         }
         
         board_update(this.width, this.height, board);
+    }
+
+    private void handle_first_reveal_at(int x, int y) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (!is_in_bounds(x+i, y+j)) continue;
+                board[y+j, x+i].is_revealed = true;
+            }
+        }
+
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (!is_in_bounds(x+i, y+j)) continue;
+                if (board[y+j, x+i].is_bomb) {
+                    board[y+j, x+i].is_bomb = false;
+                    place_random_bomb();
+                }
+            }
+        }
+
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (!is_in_bounds(x+i, y+j)) continue;
+                reveal_connected(x+i, y+j);
+            }
+        }
     }
 
     private bool is_in_bounds(int x, int y) {
@@ -144,43 +138,39 @@ public class Game {
         int startx = 0, int starty = 0,
         int endx = width, int endy = height
     )
-        requires(startx < endx)
-        requires(starty < endy)
+        requires(startx < endx && starty < endy)
     {
-        for (int i = startx; i < endx; i++) {
-            if (i < 0 || i >= width) continue;
-            for (int j = starty; j < endy; j++) {
-                if (j < 0 || j >= height) continue;
-    
-                var neighbors = 0;
-                for (int x = -1; x <= 1; x++)
-                for (int y = -1; y <= 1; y++) {
-                    if (x == 0 && y == 0) continue;
-                    
-                    var xpos = i+x;
-                    var ypos = j+y;
-                    if (!is_in_bounds(xpos, ypos)) continue;
+        for (int x = startx; x < endx; x++) {
+            for (int y = starty; y < endy; y++) {
+                if (!is_in_bounds(x, y)) continue;
 
-                    var tile = board[ypos, xpos];
-                    if (tile.is_bomb) neighbors++;
+                var neighbors = 0;
+                for (int i = -1; i <= 1; i++)
+                for (int j = -1; j <= 1; j++) {
+                    if (i == 0 && j == 0) continue;
+                    if (!is_in_bounds(x+i, y+j)) continue;
+
+                    var tile = board[x+i, y+j];
+                    if (tile.is_bomb) {
+                        neighbors++;
+                    }
                 }
-                board[j, i].bomb_neighbor_count = neighbors;
+                board[y, x].bomb_neighbor_count = neighbors;
             }
         }
     }
 
     private void place_random_bomb() 
-        requires(!has_won())
+        requires(!has_won()) // Means there is still at least one empty spot
     {
-        int x, y;
-        while (true) {
+        int x = 0, y = 0; // It cannot deduce that x and y are always set
+        do {
             x = Random.int_range(0, width);
             y = Random.int_range(0, height);
-            if (board[y, x].is_bomb || board[y, x].is_revealed) continue;
-            board[y, x].is_bomb = true;
-            break;
-        }
-        //  calculate_bomb_neighbors(x-1, y-1, x+1, y+1);
+        } while (!board[y, x].is_bomb && !board[y, x].is_revealed);
+
+        calculate_bomb_neighbors(x-1, y-1, x+1, y+1);
+        board[y, x].is_bomb = true;
         calculate_bomb_neighbors();
     }
 

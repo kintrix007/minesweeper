@@ -1,3 +1,6 @@
+.direnv/
+.envrc
+
 # Exclude the build directory
 build/
 builddir/

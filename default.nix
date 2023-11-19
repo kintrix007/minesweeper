@@ -29,12 +29,17 @@ pkgs.stdenv.mkDerivation {
 
   mesonFlags = pkgs.lib.optional cliOnly "-Dcli_only=true";
 
-  postInstall = ''
-    mkdir -p $out/share/applications
-    cp $src/dist/me.kintrix.Minesweeper.desktop $out/share/applications
-    substituteInPlace $out/share/applications/me.kintrix.Minesweeper.desktop \
-      --replace "Exec=minesweeper" "Exec=$out/bin/minesweeper"
+  inherit cliOnly;
 
-    ln -s ${pkgs.papirus-icon-theme}/share/icons $out/share/icons
+  postInstall = ''
+    # If not CLI only
+    if [[ -z $cliOnly ]]; then
+      mkdir -p $out/share/applications
+      cp $src/dist/me.kintrix.Minesweeper.desktop $out/share/applications
+      substituteInPlace $out/share/applications/me.kintrix.Minesweeper.desktop \
+        --replace "Exec=minesweeper" "Exec=$out/bin/minesweeper"
+
+      ln -s ${pkgs.papirus-icon-theme}/share/icons $out/share/icons
+    fi
   '';
 }

@@ -29,6 +29,12 @@ pkgs.stdenv.mkDerivation {
 
   installPhase = ''
     mkdir -p $out/bin/
+    mkdir -p $out/share/applications
     mv $out/builddir/minesweeper $out/bin/
+    cp $src/dist/me.kintrix.Minesweeper.desktop $out/share/applications
+    # substituteInPlace "$out/share/applications/org.godotengine.Godot.desktop" \
+    #   --replace "Exec=godot" "Exec=$out/bin/godot"
+    substituteInPlace $out/share/applications/me.kintrix.Minesweeper.desktop \
+      --replace "Exec=minesweeper" "Exec=$out/bin/minesweeper"
   '';
 }

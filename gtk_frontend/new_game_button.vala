@@ -6,7 +6,7 @@ namespace GtkFrontend {
         public NewGameButton(Gtk.ApplicationWindow window) {
             this.icon_name = "tab-new";
             this.clicked.connect(() => {
-                int width = 10, height = 10, bombs = 15;
+                int width, height, bombs;
                 get_defaults(out width, out height, out bombs);
                 
                 var dialog = new Gtk.Dialog.with_buttons("New Game", window, Gtk.DialogFlags.MODAL);

@@ -1,6 +1,25 @@
 namespace CliFrontend {
     public int run(string[] args) {
-        var game = new Game(10, 10, 10);
+        int width = 10, height = 10, bombs = 11;
+        bool help, version;
+        parse_args(args, ref width, ref height, ref bombs,
+            out help, out version);
+
+        if (help) {
+            print(help_sheet);
+            return 0;
+        }
+        if (version) {
+            print("Minesweeper version 1.0.0\n");
+            return 0;
+        }
+
+        if (width * height - bombs < 9) {
+            printerr("There must be at least 9 empty tiles.\n");
+            return 1;
+        }
+
+        var game = new Game(width, height, bombs);
         var is_game_alive = true;
         var won = false;
 
@@ -18,29 +37,32 @@ namespace CliFrontend {
             print("\n");
             print("   ");
             for (int x = 0; x < width; x++) {
-                if (x < 9) {
-                    print(@" $(x+1)");
-                } else {
-                    print(@"$(x+1)");
-                }
+                print(left_pad_spaces(x+1));
             }
             print("\n\n");
 
             for (int y = 0; y < height; y++) {
-                if (y < 9) {
-                    print(@" $(y+1)  ");
-                } else {
-                    print(@"$(y+1)  ");
-                }
+                print(left_pad_spaces(y+1));
+                print("  ");
 
                 for (int x = 0; x < width; x++) {
                     var tile = board[y, x];
                     var visual = get_tile_visuals(tile);
                     print(@"$visual ");
                 }
+
+                print(" ");
+                print(left_pad_spaces(y+1));
+
                 print("\n");
             }
+
             print("\n");
+            print("   ");
+            for (int x = 0; x < width; x++) {
+                print(left_pad_spaces(x+1));
+            }
+            print("\n\n");
         });
         
         game.update();
@@ -99,6 +121,14 @@ namespace CliFrontend {
         } else {
             var neighbors = tile.bomb_neighbor_count;
             return neighbors == 0 ? " " : @"$neighbors";
+        }
+    }
+
+    string left_pad_spaces(int n) {
+        if (n < 10) {
+            return @" $n";
+        } else {
+            return @"$n";
         }
     }
 }

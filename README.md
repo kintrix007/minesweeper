@@ -54,6 +54,8 @@ sudo dnf install vala meson ninja-build pkg-config gtk4-devel
 
    ```sh
    nix-build
+   # Or, to build it with the alternate CLI-only UI
+   nix-build --arg cliOnly true
    ```
 
 3. Install the package globally (optional)
@@ -79,6 +81,8 @@ directory.
 
    ```sh
    meson setup builddir
+   # Or to build with the alternate CLI-only UI
+   meson setup builddir -Dcli_only=true
    ```
 
 4. Compile the code

@@ -46,7 +46,7 @@ namespace CliFrontend {
         game.update();
 
         while (is_game_alive) {
-            print("x y to reveal? (separated by spaces) > ");
+            print("x y to reveal? (separated by spaces) ");
             stdout.flush();
             var coords = stdin.read_line().split(" ");
             int x, y;

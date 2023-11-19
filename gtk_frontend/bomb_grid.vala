@@ -14,20 +14,20 @@ namespace GtkFrontend {
                 child?.unparent();
             } while (child != null);
 
-            for (int i = 0; i < width; i++)
-            for (int j = 0; j < height; j++) {
-                var button = new GridTileButton(i, j);
+            for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++) {
+                var button = new GridTileButton(x, y);
                 button.clicked.connect(() => {
                     tile_clicked(button, button.x, button.y);
                 });
-                this.attach(button, i, j);
+                this.attach(button, x, y);
             }
         }
 
         public void disable_all(int width, int height) {
-            for (int i = 0; i < width; i++)
-            for (int j = 0; j < height; j++) {
-                var child = this.get_child_at(i, j) as GridTileButton;
+            for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++) {
+                var child = this.get_child_at(x, y) as GridTileButton;
                 child.sensitive = false;
             }
         }

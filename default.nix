@@ -11,6 +11,8 @@ pkgs.stdenv.mkDerivation {
     pkg-config
     meson
     ninja
+    cmake
+    gcc
     vala
     vala-language-server
   ];

@@ -31,13 +31,13 @@ nix-shell
 ### Void Linux
 
 ```sh
-sudo xbps-install -S vala meson ninja pkg-config gtk4-devel
+sudo xbps-install -S gcc vala cmake meson ninja pkg-config gtk4-devel
 ```
 
 ### Fedora Linux
 
 ```sh
-sudo dnf install vala meson ninja-build pkg-config gtk4-devel
+sudo dnf install gcc vala cmake meson ninja-build pkg-config gtk4-devel
 ```
 
 ## Build instructions
